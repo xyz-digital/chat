@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<meta name="description" content="Simple peer to peer chat">
+<title>Chat</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+</style>
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const messages = [];
+    const myId = document.getElementById("my-id");
+    const peerId = document.getElementById("peer-id");
+    const submitBtn = document.getElementById("submit");
+
+    const messagesElement = document.getElementById("messages");
+
+    const msg = document.getElementById("msg");
+    const msgSubmit = document.getElementById("msg-submit")
+
+    let conn = null;
+
+    submitBtn.addEventListener("click", function () {
+      conn = peer.connect(peerId.value);
+      setupConnection();
+    });
+
+    msgSubmit.addEventListener('click', function () {
+      if (!conn) {
+        return;
+      }
+
+      const body = msg.value;
+
+      addMessage(body)
+
+      conn.send(body)
+    })
+
+    const peer = new Peer({ debug: 3 });
+
+    peer.on('open', function (id) {
+      myId.innerText = id;
+    });
+
+    peer.on('connection', function (connection) {
+      conn = connection
+      setupConnection();
+    })
+
+    peer.on("error", function (err) {
+      console.error(err);
+    })
+
+    function setupConnection() {
+      conn.on('open', function () {
+        conn.on('data', function (data) {
+          addMessage(data)
+        });
+      });
+    }
+
+    function addMessage(body) {
+      const msg = document.createElement("p");
+      msg.appendChild(document.createTextNode(body))
+      messagesElement.appendChild(msg)
+    }
+
+  });
+
+</script>
+
+<body>
+  <h1>Chat</h1>
+  <div id="my-id"></div>
+  <input id="peer-id" />
+  <input id="submit" type="submit" />
+
+  <div id="messages">
+  </div>
+  <input id="msg" /><input id="msg-submit" type="submit" />
+</body>
+
+</html>
