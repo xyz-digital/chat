@@ -72,6 +72,15 @@
   .textbox input {
     width: 100%;
   }
+
+  .theirs {
+
+  }
+
+  .mine {
+    text-align: right;
+  }
+
 </style>
 <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 
@@ -120,7 +129,7 @@
       const body = msg.value;
       msg.value = "";
 
-      addMessage(body)
+      addMessage(body, true)
 
 
       conn.send(body)
@@ -134,8 +143,9 @@
       });
     }
 
-    function addMessage(body) {
+    function addMessage(body, mine) {
       const msg = document.createElement("p");
+      msg.setAttribute("class", mine ? "mine" : "theirs")
       msg.appendChild(document.createTextNode(body))
       messagesElement.appendChild(msg)
     }
@@ -174,20 +184,7 @@
           </tr>
         </table>
 
-        <div id="messages">
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-          <p>1</p>
-        </div>
+        <div id="messages"></div>
       </div>
     </div>
 
