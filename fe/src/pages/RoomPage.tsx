@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import { Message, messageApi } from "../apis/MessageApi";
@@ -15,24 +16,27 @@ export const RoomPage: React.FC<RoomPageProps> = (props) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const params = useParams<RoomPageParams>();
 
+  useEffect(() => {
+    messageApi.getMessages(params.id).then(setMessages);
+  }, [params.id]);
+
   async function handleSubmit() {
+    setBody("");
+
     const savedMessage = await messageApi.createMessage({
       room: params.id,
       body,
     });
 
-    setMessages([
-      ...messages,
-      savedMessage
-    ])
+    setMessages([...messages, savedMessage]);
   }
 
   const listItems = messages.map((message) => {
     return {
       _id: message._id,
-      title: message.body
-    }
-  })
+      title: message.body,
+    };
+  });
 
   return (
     <div className="room-page container">

@@ -22,9 +22,17 @@ async function run() {
 
   app.use(express.json())
 
-  app.post("/api/rooms/:id/messages", async (req, res) => {
-    console.log(req.body)
+  app.get("/api/rooms/:id/messages", async (req, res) => {
+    const messages = await Message.find({
+      room: req.params.id
+    }).lean();
 
+    return res.json({
+      data: messages,
+    });
+  });
+
+  app.post("/api/rooms/:id/messages", async (req, res) => {
     const message = await Message.create({
       ...req.body,
     });
