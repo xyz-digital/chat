@@ -17,7 +17,15 @@ export const RoomPage: React.FC<RoomPageProps> = (props) => {
   const params = useParams<RoomPageParams>();
 
   useEffect(() => {
-    messageApi.getMessages(params.id).then(setMessages);
+    function fetchMessages() {
+      messageApi.getMessages(params.id).then(setMessages);
+    }
+
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 3000);
+    return () => {
+      clearInterval(interval);
+    };
   }, [params.id]);
 
   async function handleSubmit() {
