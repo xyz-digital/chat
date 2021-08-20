@@ -7,7 +7,9 @@ run();
 
 async function run() {
   const app = express();
-  const port = 8000;
+  const port = process.env.PORT
+  ? process.env.PORT
+  : 8000;
 
   dotenv.config();
 
