@@ -6,6 +6,8 @@ import { Message } from "./models/Message";
 run();
 
 async function run() {
+  dotenv.config();
+
   const app = express();
   const port = process.env.PORT
   ? process.env.PORT
