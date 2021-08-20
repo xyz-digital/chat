@@ -12,17 +12,12 @@ type RoomsListPageProps = {};
 export const RoomsListPage: React.FC<RoomsListPageProps> = (props) => {
   const items: Room[] = [
     {
-      _id: "1",
-      title: "Room 1",
-      link: `/rooms/1`
-    },
-    {
-      _id: "2",
-      title: "Room 2",
-      link: `/rooms/2`
+      _id: "611f1cca1def03484db6db32",
+      title: "XYZ Digital",
+      link: `/rooms/611f1cca1def03484db6db32`
     },
   ];
-  
+
   return (
     <div className="rooms-list-page container">
       <List items={items} />

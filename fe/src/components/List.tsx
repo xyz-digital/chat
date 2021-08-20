@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./List.scss";
 
-type ListItem = {
+export type ListItem = {
+  _id: string;
   title: string;
   link?: string;
 };
@@ -18,6 +19,7 @@ export const List: React.FC<ListProps> = (props) => {
       {props.items.map((item) => {
         const children = (
           <div
+            key={item._id}
             className="list__item"
             onClick={props.onItemPressed?.bind(this, item)}
           >
@@ -26,7 +28,7 @@ export const List: React.FC<ListProps> = (props) => {
         );
 
         if (item.link) {
-          return <Link to={item.link || ""}></Link>;
+          return <Link key={item._id} to={item.link || ""}>{children}</Link>;
         } else {
           return children;
         }
